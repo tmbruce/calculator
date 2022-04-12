@@ -9,7 +9,7 @@ const postfix = (parsed) => {
   for (let i = 0; i < parsed.length; i++) {
     if (operators.indexOf(parsed[i]) !== -1) {
       if (
-        operatorPrecedence[stack[stack.length - 1]] >
+        operatorPrecedence[stack[stack.length - 1]] >=
         operatorPrecedence[parsed[i]]
       ) {
         rpn.push(stack.pop());
@@ -34,7 +34,10 @@ const postfix = (parsed) => {
       }
     }
   }
-  return rpn.concat(stack);
+  while (stack.length != 0) {
+    rpn.push(stack.pop());
+  }
+  return rpn;
 };
 
 export default postfix;
