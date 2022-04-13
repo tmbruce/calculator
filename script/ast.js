@@ -12,14 +12,19 @@ class AbstractTree {
   }
 
   insert(data) {
-      let newNode = new Node(data);
-      if (this.root === null) {
-          this.root == newNode;
+    const operators = ["+", "-", "*", "/", "^"];
+    let stack = [];
+    data.forEach((value) => {
+      if (operators.indexOf(value) !== -1) {
+        let newNode = new Node(value);
+        newNode.right = stack.pop();
+        newNode.left = stack.pop();
+        stack.push(newNode);
       } else {
-          this.insertNode(this.root, newNode);
-      };
-      insertNode (node, newNode) {
-          
+        let newNode = new Node(value);
+        stack.push(newNode);
       }
+    });
+    return stack.pop();
   }
 }
