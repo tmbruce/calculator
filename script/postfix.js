@@ -1,6 +1,6 @@
 //Converts infix array to reverse polish notation using Shunting-Yard algorithm
 //Expects parsed expression string, returns postfix array
-import operatorPrecedence from "./operatorPrecedence";
+import operatorPrecedence from "../script/operatorPrecedence.js";
 const operators = ["+", "-", "*", "/", "^"];
 
 const postfix = (parsed) => {
@@ -30,13 +30,19 @@ const postfix = (parsed) => {
           }
         }
       } else {
-        rpn.push(parsed[i]);
+        rpn.push(Number(parsed[i]));
       }
     }
   }
   while (stack.length != 0) {
-    rpn.push(stack.pop());
+    let leftover = stack.pop();
+    if (leftover == ")" || leftover == "(") {
+      stack.pop();
+    } else {
+      rpn.push(leftover);
+    }
   }
+
   return rpn;
 };
 
