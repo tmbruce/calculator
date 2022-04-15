@@ -4,9 +4,49 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="app.css" />
+    <title>Semi-Scientific Calculator</title>
   </head>
   <body>
+    <div class="container">
+      <div class="calculator-body">
+        <div class="display"></div>
+        <div class="keypad">
+          <div class="theme-button">
+            <label class="switch">
+              <input type="checkbox" />
+              <span class="slider round"></span>
+            </label>
+            <div>Switch to theme</div>
+          </div>
+          <button class="calc-button">&#8597;</button>
+          <button class="calc-button yellow-dark">C</button>
+          <button class="calc-button yellow">(</button>
+          <button class="calc-button yellow">)</button>
+          <button class="calc-button purple">&#215;</button>
+          <button class="calc-button yellow">x<sup>y</sup></button>
+          <button class="calc-button yellow">%</button>
+          <button class="calc-button yellow">&#177;</button>
+          <button class="calc-button purple">&#247;</button>
+          <button class="calc-button">7</button>
+          <button class="calc-button">8</button>
+          <button class="calc-button">9</button>
+          <button class="calc-button purple">&#8722;</button>
+          <button class="calc-button">4</button>
+          <button class="calc-button">5</button>
+          <button class="calc-button">6</button>
+          <button class="calc-button purple">&#43;</button>
+          <button class="calc-button">1</button>
+          <button class="calc-button">2</button>
+          <button class="calc-button">3</button>
+          <button class="calc-button equal purple-dark">&#61;</button>
+          <button class="calc-button">.</button>
+          <button class="calc-button">0</button>
+          <button class="calc-button del">del</button>
+        </div>
+      </div>
+    </div>
+
     <script type="module">
       import stringParse from "./script/stringParse.js";
       import postfix from "./script/postfix.js";
