@@ -14,10 +14,10 @@
         <div class="keypad">
           <div class="theme-button">
             <label class="switch">
-              <input type="checkbox" />
+              <input class="theme-switch" type="checkbox" />
               <span class="slider round"></span>
             </label>
-            <div>Switch to theme</div>
+            <div id="theme-text">Switch to dark theme</div>
           </div>
           <button class="calc-button">&#8597;</button>
           <button class="calc-button yellow-dark">C</button>
@@ -48,19 +48,31 @@
     </div>
 
     <script type="module">
-      import stringParse from "./script/stringParse.js";
-      import postfix from "./script/postfix.js";
-      import AbstracTree from "./script/ast.js";
-      import mathOps from "./script/mathOps.js";
+      let isDark = false;
+      let themeSwitch = document.querySelector(".theme-switch");
+      let themeText = document.querySelector("#theme-text");
+      themeSwitch.addEventListener("change", (e) => {
+        let root = document.body;
+        root.classList.toggle("dark-mode");
+        isDark = !isDark;
+        themeText.textContent = isDark
+          ? "Switch to light theme"
+          : "Switch to dark theme";
+      });
 
-      let input = "14-(6*(11+(9^2-15)))+(6*5)";
-      let inputParsed = stringParse(input);
-      let pf = postfix(inputParsed);
-      let tree = new AbstracTree();
-      let nodes = tree.insert(pf);
+      // import stringParse from "./script/stringParse.js";
+      // import postfix from "./script/postfix.js";
+      // import AbstracTree from "./script/ast.js";
+      // import mathOps from "./script/mathOps.js";
 
-      let solveReturn = tree.solve(nodes);
-      console.log(solveReturn.data);
+      // let input = "14-(6*(11+(9^2-15)))+(6*5)";
+      // let inputParsed = stringParse(input);
+      // let pf = postfix(inputParsed);
+      // let tree = new AbstracTree();
+      // let nodes = tree.insert(pf);
+
+      // let solveReturn = tree.solve(nodes);
+      // console.log(solveReturn.data);
     </script>
   </body>
 </html>
