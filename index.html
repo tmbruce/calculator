@@ -10,6 +10,7 @@
   <body>
     <div class="container">
       <div class="calculator-body">
+        <div class="top-display"></div>
         <div class="display"></div>
         <div class="keypad">
           <div class="theme-button">
@@ -19,51 +20,78 @@
             </label>
             <div id="theme-text">Switch to dark theme</div>
           </div>
-          <button class="calc-button">&#8597;</button>
-          <button class="calc-button yellow-dark">C</button>
-          <button class="calc-button yellow">(</button>
-          <button class="calc-button yellow">)</button>
-          <button class="calc-button purple">&#215;</button>
-          <button class="calc-button yellow">x<sup>y</sup></button>
-          <button class="calc-button yellow">%</button>
-          <button class="calc-button yellow">&#177;</button>
-          <button class="calc-button purple">&#247;</button>
-          <button class="calc-button">7</button>
-          <button class="calc-button">8</button>
-          <button class="calc-button">9</button>
-          <button class="calc-button purple">&#8722;</button>
-          <button class="calc-button">4</button>
-          <button class="calc-button">5</button>
-          <button class="calc-button">6</button>
-          <button class="calc-button purple">&#43;</button>
-          <button class="calc-button">1</button>
-          <button class="calc-button">2</button>
-          <button class="calc-button">3</button>
-          <button class="calc-button equal purple-dark">&#61;</button>
-          <button class="calc-button">.</button>
-          <button class="calc-button">0</button>
-          <button class="calc-button del">del</button>
+          <button id="screen-size" class="calc-button">&#8597;</button>
+          <button id="clear" class="calc-button yellow-dark">C</button>
+          <button id="left-paren" class="calc-button yellow">(</button>
+          <button id="right-paren" class="calc-button yellow">)</button>
+          <button id="multiply" class="calc-button purple">&#215;</button>
+          <button id="exponent" class="calc-button yellow">
+            x<sup>y</sup>
+          </button>
+          <button id="percent" class="calc-button yellow">%</button>
+          <button id="plus-minus" class="calc-button yellow">&#177;</button>
+          <button id="divide" class="calc-button purple">&#247;</button>
+          <button id="seven" class="calc-button">7</button>
+          <button id="eight" class="calc-button">8</button>
+          <button id="nine" class="calc-button">9</button>
+          <button id="minus" class="calc-button purple">&#8722;</button>
+          <button id="four" class="calc-button">4</button>
+          <button id="five" class="calc-button">5</button>
+          <button id="six" class="calc-button">6</button>
+          <button id="plus" class="calc-button purple">&#43;</button>
+          <button id="one" class="calc-button">1</button>
+          <button id="two" class="calc-button">2</button>
+          <button id="three" class="calc-button">3</button>
+          <button id="equal" class="calc-button equal purple-dark">
+            &#61;
+          </button>
+          <button id="decimal" class="calc-button">.</button>
+          <button id="zero" class="calc-button">0</button>
+          <button id="delete" class="calc-button del">del</button>
         </div>
       </div>
     </div>
 
     <script type="module">
+      import stringParse from "./script/stringParse.js";
+      import postfix from "./script/postfix.js";
+      import AbstracTree from "./script/ast.js";
+      import mathOps from "./script/mathOps.js";
+      import "../script/calcInterface.js";
+
       let isDark = false;
       let themeSwitch = document.querySelector(".theme-switch");
       let themeText = document.querySelector("#theme-text");
-      themeSwitch.addEventListener("change", (e) => {
+
+      const toggleDarkMode = () => {
         let root = document.body;
         root.classList.toggle("dark-mode");
         isDark = !isDark;
+        themeSwitch.checked = isDark;
         themeText.textContent = isDark
           ? "Switch to light theme"
           : "Switch to dark theme";
+      };
+
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        toggleDarkMode();
+      }
+
+      themeSwitch.addEventListener("change", (e) => {
+        toggleDarkMode();
       });
 
-      // import stringParse from "./script/stringParse.js";
-      // import postfix from "./script/postfix.js";
-      // import AbstracTree from "./script/ast.js";
-      // import mathOps from "./script/mathOps.js";
+      let display = document.querySelector(".display");
+      let equalButton = document.querySelector("#equal");
+
+      equalButton.addEventListener("click", () => {
+        let inputParsed = stringParse(display.textContent);
+        let pf = postfix(inputParsed);
+        let tree = new AbstracTree();
+        let nodes = tree.insert(pf);
+        let solveReturn = tree.solve(nodes);
+        display.textContent = `= ${solveReturn.data}`;
+      });
 
       // let input = "14-(6*(11+(9^2-15)))+(6*5)";
       // let inputParsed = stringParse(input);

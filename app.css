@@ -24,6 +24,10 @@
   --purple-dark-shadow: 2px 2px 5px 1px rgba(144, 37, 233, 0.5),
     -2px -2px 4px 1px rgba(255, 255, 255, 0.9);
   --delete-key-bg: rgb(229, 231, 235);
+  --slider-bg: rgb(155, 161, 166);
+  --slider-thumb: white;
+  --display-txt: rgb(81, 93, 101);
+  /* --slider-bg: linear-gradient(45deg, rgb(143, 152, 156), rgb(172, 179, 183)); */
 }
 
 .dark-mode {
@@ -52,9 +56,13 @@
   --purple-dark-shadow: 2px 2px 5px 1px rgba(23, 13, 53, 0.5),
     -2px -2px 4px 1px rgba(73, 63, 76, 0.9);
   --delete-key-bg: rgb(45, 45, 49);
+  --slider-bg: rgb(41, 43, 45);
+  --slider-thumb: rgb(161, 162, 169);
+  --display-txt: rgb(157, 164, 164);
 }
 body {
   margin: 0;
+  padding: 0;
   font-family: sans-serif;
   background: var(--bg-gradient);
 }
@@ -74,6 +82,14 @@ body {
 }
 .display {
   height: 200px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  padding-bottom: 1rem;
+  transition: 200ms;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--display-txt);
 }
 .theme-button {
   display: flex;
@@ -101,7 +117,8 @@ body {
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: #ccc;
+  background-color: var(--slider-bg);
+  box-shadow: var(--calc-button-shadow);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -112,15 +129,17 @@ body {
   width: 26px;
   left: 3px;
   bottom: 3px;
-  background-color: white;
+  background-color: var(--slider-thumb);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 input:checked + .slider {
-  background-color: #2196f3;
+  background-color: var(--slider-bg);
+  box-shadow: var(--calc-button-shadow);
 }
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
+  box-shadow: 0 0 1px var(--slider-bg);
+  box-shadow: var(--calc-button-shadow);
 }
 input:checked + .slider:before {
   -webkit-transform: translateX(23px);
@@ -139,11 +158,9 @@ input:checked + .slider:before {
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
-
 .equal {
   grid-row: span 2;
 }
-
 .calc-button {
   border: none;
   font-size: 1.3rem;
@@ -151,6 +168,10 @@ input:checked + .slider:before {
   background-color: var(--calc-button-bg);
   color: var(--calc-button-txt);
   box-shadow: var(--calc-button-shadow);
+}
+.calc-button:active {
+  transform: scale(0.95);
+  transition: 200ms;
 }
 .equal {
   height: 100%;
@@ -177,9 +198,4 @@ input:checked + .slider:before {
 }
 .del {
   background-color: var(--delete-key-bg);
-}
-@media (max-width: 320px) {
-  .calculator-body {
-    width: 100%;
-  }
 }
