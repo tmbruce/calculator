@@ -80,8 +80,17 @@ body {
   padding: 1rem;
   box-shadow: var(--calc-shadow);
 }
+.top-display {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  height: 7rem;
+  transition: 200ms;
+  color: var(--display-txt);
+  font-size: medium;
+}
 .display {
-  height: 200px;
+  height: 3rem;
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-end;

@@ -1,6 +1,12 @@
-let outputString = "";
+import stringParse from "./stringParse.js";
+import postfix from "./postfix.js";
+import AbstracTree from "./ast.js";
+import mathOps from "./mathOps.js";
 
+export let calculationComplete = false;
+let outputString = "";
 let screen = document.querySelector(".display");
+let topDisplay = document.querySelector(".top-display");
 screen.textContent = outputString;
 
 //Adjust screen size
@@ -8,10 +14,10 @@ let screenLarge = true;
 let screenSizeButton = document.querySelector("#screen-size");
 screenSizeButton.addEventListener("click", () => {
   screenLarge = !screenLarge;
-  let screen = document.querySelector(".display");
+  let topScreen = document.querySelector(".top-display");
   screenLarge
-    ? (screen.style.height = "200px")
-    : (screen.style.height = "60px");
+    ? (topScreen.style.height = "7rem")
+    : (topScreen.style.height = "0rem");
 });
 
 let calcButtons = [
@@ -103,5 +109,22 @@ const btnPress = (btn) => {
       let displayTxt = screen.textContent;
       screen.textContent = displayTxt.slice(0, -1);
       break;
+    case "exponent":
+      screen.textContent += "";
+      break;
   }
 };
+
+let equalButton = document.querySelector("#equal");
+
+equalButton.addEventListener("click", () => {
+  //calculationComplete = !calculationComplete;
+
+  let inputParsed = stringParse(screen.textContent);
+  topDisplay.textContent = screen.textContent;
+  let pf = postfix(inputParsed);
+  let tree = new AbstracTree();
+  let nodes = tree.insert(pf);
+  let solveReturn = tree.solve(nodes);
+  screen.textContent = `= ${solveReturn.data}`;
+});

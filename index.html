@@ -53,11 +53,7 @@
     </div>
 
     <script type="module">
-      import stringParse from "./script/stringParse.js";
-      import postfix from "./script/postfix.js";
-      import AbstracTree from "./script/ast.js";
-      import mathOps from "./script/mathOps.js";
-      import "../script/calcInterface.js";
+      import "./script/calcInterface.js";
 
       let isDark = false;
       let themeSwitch = document.querySelector(".theme-switch");
@@ -80,27 +76,6 @@
       themeSwitch.addEventListener("change", (e) => {
         toggleDarkMode();
       });
-
-      let display = document.querySelector(".display");
-      let equalButton = document.querySelector("#equal");
-
-      equalButton.addEventListener("click", () => {
-        let inputParsed = stringParse(display.textContent);
-        let pf = postfix(inputParsed);
-        let tree = new AbstracTree();
-        let nodes = tree.insert(pf);
-        let solveReturn = tree.solve(nodes);
-        display.textContent = `= ${solveReturn.data}`;
-      });
-
-      // let input = "14-(6*(11+(9^2-15)))+(6*5)";
-      // let inputParsed = stringParse(input);
-      // let pf = postfix(inputParsed);
-      // let tree = new AbstracTree();
-      // let nodes = tree.insert(pf);
-
-      // let solveReturn = tree.solve(nodes);
-      // console.log(solveReturn.data);
     </script>
   </body>
 </html>
