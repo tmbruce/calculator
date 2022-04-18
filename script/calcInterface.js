@@ -2,9 +2,11 @@ import stringParse from "./stringParse.js";
 import postfix from "./postfix.js";
 import AbstracTree from "./ast.js";
 
+let exponentMode = false;
 let calculationComplete = false;
 let topDisplay = document.querySelector(".top-display");
 let screen = document.querySelector(".display");
+let expButton = document.getElementById("exponent");
 
 //Adjust screen size
 let screenLarge = true;
@@ -47,8 +49,14 @@ calcButtons.forEach((btn) => {
     btnPress(e.target.id);
   });
 });
+const toggleExponentMode = () => {
+  exponentMode = !exponentMode;
+  expButton.classList.toggle("yellow");
+  expButton.classList.toggle("exponent-down");
+};
 
 const btnPress = (btn) => {
+  let buttonVal = "";
   if (calculationComplete && btn != "clear") {
     screen.innerHTML = "";
     calculationComplete = !calculationComplete;
@@ -59,84 +67,107 @@ const btnPress = (btn) => {
         topDisplay.innerHTML = "";
       }
       screen.innerHTML = "";
+      if (exponentMode) {
+        toggleExponentMode();
+      }
       break;
     case "left-paren":
-      screen.innerHTML += "(";
+      buttonVal += "(";
       break;
     case "right-paren":
-      screen.innerHTML += ")";
+      buttonVal += ")";
       break;
     case "multiply":
-      screen.innerHTML += "×";
+      buttonVal += "×";
       break;
     case "one":
-      screen.innerHTML += "1";
+      buttonVal += "1";
       break;
     case "two":
-      screen.innerHTML += "2";
+      buttonVal += "2";
       break;
     case "three":
-      screen.innerHTML += "3";
+      buttonVal += "3";
       break;
     case "four":
-      screen.innerHTML += "4";
+      buttonVal += "4";
       break;
     case "five":
-      screen.innerHTML += "5";
+      buttonVal += "5";
       break;
     case "six":
-      screen.innerHTML += "6";
+      buttonVal += "6";
       break;
     case "seven":
-      screen.innerHTML += "7";
+      buttonVal += "7";
       break;
     case "eight":
-      screen.innerHTML += "8";
+      buttonVal += "8";
       break;
     case "nine":
-      screen.innerHTML += "9";
+      buttonVal += "9";
       break;
     case "zero":
-      screen.innerHTML += "0";
+      buttonVal += "0";
       break;
     case "plus":
-      screen.innerHTML += "+";
+      buttonVal += "+";
       break;
     case "divide":
-      screen.innerHTML += "÷";
+      buttonVal += "÷";
       break;
     case "minus":
-      screen.innerHTML += "-";
+      buttonVal += "-";
       break;
     case "decimal":
       if (
         isNaN(screen.innerHTML.toString()) ||
         screen.innerHTML.toString() == ""
       ) {
-        screen.innerHTML += "0.";
+        buttonVal += "0.";
       } else {
-        screen.innerHTML += ".";
+        buttonVal += ".";
       }
       break;
     case "delete":
-      let displayTxt = screen.textContent;
-      screen.textContent = displayTxt.slice(0, -1);
+      if (screen.lastChild.innerHTML != "") {
+        screen.lastChild.innerHTML = screen.lastChild.innerHTML.slice(0, -1);
+      } else {
+        screen.innerHTML = screen.innerHTML.toString().slice(0, -1);
+      }
       break;
     case "exponent":
-      let exp = `<sup>2</sup>`;
-      screen.innerHTML += exp;
+      if (exponentMode) {
+        if (screen.lastChild.innerHTML == "") {
+          screen.removeChild(screen.lastChild);
+        }
+        toggleExponentMode();
+      } else {
+        toggleExponentMode();
+        let exp = `<sup></sup>`;
+        screen.innerHTML += exp;
+      }
       break;
   }
+  exponentMode
+    ? (screen.lastChild.innerHTML += buttonVal)
+    : (screen.innerHTML += buttonVal);
 };
 
 let equalButton = document.querySelector("#equal");
 
 equalButton.addEventListener("click", () => {
+  if (exponentMode) {
+    expButton.classList.toggle("yellow");
+    expButton.classList.toggle("exponent-down");
+    exponentMode = !exponentMode;
+  }
   if (!calculationComplete) {
     calculationComplete = !calculationComplete;
     let inputParsed = stringParse(
       screen.innerHTML
         .toString()
+        .replaceAll("<sup></sup>", "")
         .replaceAll("×", "*")
         .replaceAll("÷", "/")
         .replaceAll("<sup>", "^")
@@ -145,7 +176,6 @@ equalButton.addEventListener("click", () => {
     let newEq = document.createElement("div");
     newEq.innerHTML = screen.innerHTML + `<br/>`;
     topDisplay.prepend(newEq);
-    //topDisplay.innerHTML += screen.innerHTML += `<br>`;
     let pf = postfix(inputParsed);
     let tree = new AbstracTree();
     let nodes = tree.insert(pf);

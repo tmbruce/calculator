@@ -34,7 +34,9 @@ class AbstractTree {
   }
 
   solve(node) {
-    if (this.isOperator(node.data)) {
+    if (node.left == null && node.right == null) {
+      return node;
+    } else if (this.isOperator(node.data)) {
       if (
         !this.isOperator(node.left.data) &&
         !this.isOperator(node.right.data)
