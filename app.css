@@ -84,22 +84,27 @@ body {
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-end;
+  /* justify-content: flex-end; */
   height: 7rem;
   transition: 200ms;
   color: var(--display-txt);
   font-size: medium;
 }
+.top-display sup {
+  margin-bottom: 5px;
+}
 .display {
   height: 3rem;
   display: flex;
-  flex-direction: column-reverse;
-  align-items: flex-end;
+  /* flex-direction: column-reverse; */
+  justify-content: flex-end;
   padding-bottom: 1rem;
   transition: 200ms;
   font-size: 2rem;
   font-weight: bold;
   color: var(--display-txt);
 }
+
 .theme-button {
   display: flex;
   align-items: center;

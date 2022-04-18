@@ -68,6 +68,11 @@
           ? "Switch to light theme"
           : "Switch to dark theme";
       };
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", () => {
+          toggleDarkMode();
+        });
 
       if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
         toggleDarkMode();

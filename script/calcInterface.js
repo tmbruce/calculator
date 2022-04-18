@@ -50,69 +50,72 @@ calcButtons.forEach((btn) => {
 
 const btnPress = (btn) => {
   if (calculationComplete && btn != "clear") {
-    screen.textContent = "";
+    screen.innerHTML = "";
     calculationComplete = !calculationComplete;
   }
   switch (btn) {
     case "clear":
-      if (screen.textContent == "") {
-        topDisplay.textContent = "";
+      if (screen.innerHTML == "") {
+        topDisplay.innerHTML = "";
       }
-      screen.textContent = "";
+      screen.innerHTML = "";
       break;
     case "left-paren":
-      screen.textContent += "(";
+      screen.innerHTML += "(";
       break;
     case "right-paren":
-      screen.textContent += ")";
+      screen.innerHTML += ")";
       break;
     case "multiply":
-      screen.textContent += "×";
+      screen.innerHTML += "×";
       break;
     case "one":
-      screen.textContent += "1";
+      screen.innerHTML += "1";
       break;
     case "two":
-      screen.textContent += "2";
+      screen.innerHTML += "2";
       break;
     case "three":
-      screen.textContent += "3";
+      screen.innerHTML += "3";
       break;
     case "four":
-      screen.textContent += "4";
+      screen.innerHTML += "4";
       break;
     case "five":
-      screen.textContent += "5";
+      screen.innerHTML += "5";
       break;
     case "six":
-      screen.textContent += "6";
+      screen.innerHTML += "6";
       break;
     case "seven":
-      screen.textContent += "7";
+      screen.innerHTML += "7";
       break;
     case "eight":
-      screen.textContent += "8";
+      screen.innerHTML += "8";
       break;
     case "nine":
-      screen.textContent += "9";
+      screen.innerHTML += "9";
       break;
     case "zero":
-      screen.textContent += "0";
+      screen.innerHTML += "0";
       break;
     case "plus":
-      screen.textContent += "+";
+      screen.innerHTML += "+";
       break;
     case "divide":
-      screen.textContent += "÷";
+      screen.innerHTML += "÷";
       break;
     case "minus":
-      screen.textContent += "-";
+      screen.innerHTML += "-";
       break;
     case "decimal":
-      if (isNaN(screen.textContent) || screen.textContent == "") {
-        screen.textContent += "0.";
+      if (
+        isNaN(screen.innerHTML.toString()) ||
+        screen.innerHTML.toString() == ""
+      ) {
+        screen.innerHTML += "0.";
       } else {
-        screen.textContent += ".";
+        screen.innerHTML += ".";
       }
       break;
     case "delete":
@@ -120,7 +123,8 @@ const btnPress = (btn) => {
       screen.textContent = displayTxt.slice(0, -1);
       break;
     case "exponent":
-      screen.textContent += "";
+      let exp = `<sup>2</sup>`;
+      screen.innerHTML += exp;
       break;
   }
 };
@@ -128,13 +132,20 @@ const btnPress = (btn) => {
 let equalButton = document.querySelector("#equal");
 
 equalButton.addEventListener("click", () => {
-  console.log(screen.textContent);
   if (!calculationComplete) {
     calculationComplete = !calculationComplete;
     let inputParsed = stringParse(
-      screen.textContent.replaceAll("×", "*").replaceAll("÷", "/")
+      screen.innerHTML
+        .toString()
+        .replaceAll("×", "*")
+        .replaceAll("÷", "/")
+        .replaceAll("<sup>", "^")
+        .replaceAll("</sup>", "")
     );
-    topDisplay.textContent = screen.textContent;
+    let newEq = document.createElement("div");
+    newEq.innerHTML = screen.innerHTML + `<br/>`;
+    topDisplay.prepend(newEq);
+    //topDisplay.innerHTML += screen.innerHTML += `<br>`;
     let pf = postfix(inputParsed);
     let tree = new AbstracTree();
     let nodes = tree.insert(pf);
