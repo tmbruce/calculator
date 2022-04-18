@@ -1,13 +1,10 @@
 import stringParse from "./stringParse.js";
 import postfix from "./postfix.js";
 import AbstracTree from "./ast.js";
-import mathOps from "./mathOps.js";
 
-export let calculationComplete = false;
-let outputString = "";
-let screen = document.querySelector(".display");
+let calculationComplete = false;
 let topDisplay = document.querySelector(".top-display");
-screen.textContent = outputString;
+let screen = document.querySelector(".display");
 
 //Adjust screen size
 let screenLarge = true;
@@ -40,7 +37,6 @@ let calcButtons = [
   "one",
   "two",
   "three",
-  "equal",
   "decimal",
   "zero",
   "delete",
@@ -53,8 +49,15 @@ calcButtons.forEach((btn) => {
 });
 
 const btnPress = (btn) => {
+  if (calculationComplete && btn != "clear") {
+    screen.textContent = "";
+    calculationComplete = !calculationComplete;
+  }
   switch (btn) {
     case "clear":
+      if (screen.textContent == "") {
+        topDisplay.textContent = "";
+      }
       screen.textContent = "";
       break;
     case "left-paren":
@@ -105,6 +108,13 @@ const btnPress = (btn) => {
     case "minus":
       screen.textContent += "-";
       break;
+    case "decimal":
+      if (isNaN(screen.textContent) || screen.textContent == "") {
+        screen.textContent += "0.";
+      } else {
+        screen.textContent += ".";
+      }
+      break;
     case "delete":
       let displayTxt = screen.textContent;
       screen.textContent = displayTxt.slice(0, -1);
@@ -118,13 +128,17 @@ const btnPress = (btn) => {
 let equalButton = document.querySelector("#equal");
 
 equalButton.addEventListener("click", () => {
-  //calculationComplete = !calculationComplete;
-
-  let inputParsed = stringParse(screen.textContent);
-  topDisplay.textContent = screen.textContent;
-  let pf = postfix(inputParsed);
-  let tree = new AbstracTree();
-  let nodes = tree.insert(pf);
-  let solveReturn = tree.solve(nodes);
-  screen.textContent = `= ${solveReturn.data}`;
+  console.log(screen.textContent);
+  if (!calculationComplete) {
+    calculationComplete = !calculationComplete;
+    let inputParsed = stringParse(
+      screen.textContent.replaceAll("×", "*").replaceAll("÷", "/")
+    );
+    topDisplay.textContent = screen.textContent;
+    let pf = postfix(inputParsed);
+    let tree = new AbstracTree();
+    let nodes = tree.insert(pf);
+    let solveReturn = tree.solve(nodes);
+    screen.textContent = `= ${solveReturn.data}`;
+  }
 });
