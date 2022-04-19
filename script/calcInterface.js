@@ -4,6 +4,7 @@ import AbstracTree from "./ast.js";
 
 let exponentMode = false;
 let calculationComplete = false;
+let currentInput = "";
 let topDisplay = document.querySelector(".top-display");
 let screen = document.querySelector(".display");
 let expButton = document.getElementById("exponent");
@@ -19,7 +20,7 @@ screenSizeButton.addEventListener("click", () => {
     : (topScreen.style.height = "0rem");
 });
 
-let calcButtons = [
+const calcButtons = [
   "clear",
   "left-paren",
   "right-paren",
@@ -28,6 +29,7 @@ let calcButtons = [
   "percent",
   "plus-minus",
   "divide",
+  "decimal",
   "seven",
   "eight",
   "nine",
@@ -39,10 +41,11 @@ let calcButtons = [
   "one",
   "two",
   "three",
-  "decimal",
   "zero",
   "delete",
 ];
+
+const operators = calcButtons.slice(0, 8);
 
 calcButtons.forEach((btn) => {
   document.querySelector(`#${btn}`).addEventListener("click", (e) => {
@@ -120,14 +123,17 @@ const btnPress = (btn) => {
       buttonVal += "-";
       break;
     case "decimal":
-      if (
-        isNaN(screen.innerHTML.toString()) ||
-        screen.innerHTML.toString() == ""
-      ) {
-        buttonVal += "0.";
-      } else {
-        buttonVal += ".";
+      if (currentInput.indexOf(".") == -1) {
+        if (
+          isNaN(screen.innerHTML.toString()) ||
+          screen.innerHTML.toString() == ""
+        ) {
+          buttonVal += "0.";
+        } else {
+          buttonVal += ".";
+        }
       }
+
       break;
     case "delete":
       if (screen.lastChild.innerHTML != "") {
@@ -152,6 +158,11 @@ const btnPress = (btn) => {
   exponentMode
     ? (screen.lastChild.innerHTML += buttonVal)
     : (screen.innerHTML += buttonVal);
+  if (operators.indexOf(btn) != -1) {
+    currentInput = "";
+  } else {
+    currentInput += buttonVal;
+  }
 };
 
 let equalButton = document.querySelector("#equal");
@@ -179,7 +190,13 @@ equalButton.addEventListener("click", () => {
     let pf = postfix(inputParsed);
     let tree = new AbstracTree();
     let nodes = tree.insert(pf);
-    let solveReturn = tree.solve(nodes);
+    let solveReturn;
+    try {
+      solveReturn = tree.solve(nodes);
+    } catch (e) {
+      solveReturn = "Syntax error";
+    }
+
     screen.textContent = `= ${solveReturn.data}`;
   }
 });
