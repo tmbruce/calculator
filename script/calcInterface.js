@@ -21,23 +21,23 @@ screenSizeButton.addEventListener("click", () => {
 });
 
 const calcButtons = [
-  "clear",
-  "left-paren",
-  "right-paren",
   "multiply",
   "exponent",
   "percent",
   "plus-minus",
   "divide",
   "decimal",
+  "plus",
+  "minus",
+  "clear",
+  "left-paren",
+  "right-paren",
   "seven",
   "eight",
   "nine",
-  "minus",
   "four",
   "five",
   "six",
-  "plus",
   "one",
   "two",
   "three",
@@ -45,7 +45,7 @@ const calcButtons = [
   "delete",
 ];
 
-const operators = calcButtons.slice(0, 8);
+const operators = calcButtons.slice(0, 11);
 
 calcButtons.forEach((btn) => {
   document.querySelector(`#${btn}`).addEventListener("click", (e) => {
@@ -60,6 +60,11 @@ const toggleExponentMode = () => {
 
 const btnPress = (btn) => {
   let buttonVal = "";
+  if (operators.slice(0, 8).indexOf(btn) != -1 && calculationComplete == true) {
+    calculationComplete = !calculationComplete;
+    let newOperation = screen.innerHTML.toString().replace("= ", "");
+    screen.innerHTML = newOperation;
+  }
   if (calculationComplete && btn != "clear") {
     screen.innerHTML = "";
     calculationComplete = !calculationComplete;
@@ -122,6 +127,15 @@ const btnPress = (btn) => {
     case "minus":
       buttonVal += "-";
       break;
+    case "plus-minus":
+      let currentVal = screen.innerHTML;
+      if (currentVal.indexOf("-") == -1) {
+        currentVal = "-" + currentVal;
+      } else {
+        currentVal = currentVal.replace("-", "");
+      }
+      screen.innerHTML = currentVal;
+      break;
     case "decimal":
       if (currentInput.indexOf(".") == -1) {
         if (
@@ -133,10 +147,9 @@ const btnPress = (btn) => {
           buttonVal += ".";
         }
       }
-
       break;
     case "delete":
-      if (screen.lastChild.innerHTML != "") {
+      if (screen.lastChild.innerHTML) {
         screen.lastChild.innerHTML = screen.lastChild.innerHTML.slice(0, -1);
       } else {
         screen.innerHTML = screen.innerHTML.toString().slice(0, -1);
@@ -184,6 +197,7 @@ equalButton.addEventListener("click", () => {
         .replaceAll("<sup>", "^")
         .replaceAll("</sup>", "")
     );
+
     let newEq = document.createElement("div");
     newEq.innerHTML = screen.innerHTML + `<br/>`;
     topDisplay.prepend(newEq);
@@ -196,7 +210,6 @@ equalButton.addEventListener("click", () => {
     } catch (e) {
       solveReturn = "Syntax error";
     }
-
-    screen.textContent = `= ${solveReturn.data}`;
+    screen.innerHTML = `= ${solveReturn.data}`;
   }
 });
