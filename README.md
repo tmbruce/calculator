@@ -13,4 +13,4 @@ The calculator allows for input similar to a standard graphing calculator. The i
 [ ] - Implement scaling font / rounding to prevent screen overflows  
 [ ] - Add functionality to percent button (maybe swap with square root?)  
 [ ] - Add keyboard functionality    
-
+[ ] - Fix obnoxious ios substituted icon  
