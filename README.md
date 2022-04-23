@@ -14,3 +14,4 @@ The calculator allows for input similar to a standard graphing calculator. The i
 [ ] - Add functionality to percent button (maybe swap with square root?)  
 [ ] - Add keyboard functionality    
 [ ] - Fix obnoxious ios substituted icon  
+[ ] - Fix plus minus button to change value for the last number input   
