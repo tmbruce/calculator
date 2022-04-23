@@ -96,7 +96,8 @@ body {
   margin-bottom: 5px;
 }
 .display sup {
-  margin-bottom: 20px;
+  vertical-align: top;
+  font-size: 60%;
 }
 .display {
   height: 3rem;

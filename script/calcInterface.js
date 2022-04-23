@@ -176,6 +176,7 @@ const btnPress = (btn) => {
   } else {
     currentInput += buttonVal;
   }
+  console.log(screen.innerHTML);
 };
 
 let equalButton = document.querySelector("#equal");
