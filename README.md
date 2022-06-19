@@ -10,8 +10,8 @@ View the [live demo](https://tmbruce.github.io/calculator/)
 The calculator allows for input similar to a standard graphing calculator. The input is tokenized with regular expressions. The tokenized output is converted to postfix / reverse Polish notation with the Shunting-Yard algorithm. The postfix notation is converted to an abstract syntax tree and recursively solved. The calculator allows for more complex operations than a standard calculator, but not quite as complex as a modern graphing calculator, hence 'semi-scientific.' The calculator theme will change based on your system preference (it works on mac, but I don't have a windows machine to test it on). Changing the system preference will automatically updaate the UI on the page.
 
 ## Todo
-[ ] - Implement scaling font / rounding to prevent screen overflows  
-[ ] - Add functionality to percent button (maybe swap with square root?)  
-[ ] - Add keyboard functionality    
-[ ] - Fix obnoxious ios substituted icon  
-[ ] - Fix plus minus button to change value for the last number input   
+- [ ] Implement scaling font / rounding to prevent screen overflows  
+- [ ] Add functionality to percent button (maybe swap with square root?)  
+- [ ] Add keyboard functionality    
+- [ ] Fix obnoxious ios substituted icon  
+- [ ] Fix plus minus button to change value for the last number input   
